@@ -2,7 +2,7 @@
 #include "App.h"
 
 OS_TASK(TASK1);
-void main(void)
+int main(void)
 {
 	/* Call FreeRTOS APIs to create tasks, all tasks has the same priority "1" with thesame stack size*/
 	xTaskCreate( OS_TASK_PTR(TASK1), OS_TASK_NAME(TASK1), configMINIMAL_STACK_SIZE, NULL, 1, NULL );
@@ -10,13 +10,14 @@ void main(void)
 	vTaskStartScheduler();
 	/* Do nothing here and just run infinte loop */
 	while(1);
+	return 0;
 }
 
-portTickType Os_Counter=0;
+TickType_t Os_Counter=0;
 
 OS_TASK(TASK1)
 {
-	portTickType xLastWakeTime;
+	TickType_t xLastWakeTime;
 	APP_TASK_CALL(Init_Task);
 	xLastWakeTime = xTaskGetTickCount();
 	while (1)

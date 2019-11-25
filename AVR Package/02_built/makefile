@@ -72,6 +72,9 @@ SRC = ../01_SWC/mainSW.c\
 	  ../00_BSW/FreeRTOS/queue.c\
 	  ../00_BSW/FreeRTOS/tasks.c\
 	  ../00_BSW/FreeRTOS/timers.c\
+	  ../00_BSW/FreeRTOS/stream_buffer.c\
+	  ../00_BSW/FreeRTOS/event_groups.c\
+	  
 
 
 #################################### EXTRA LIB DIRS (.c) ####################################
