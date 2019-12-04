@@ -1,66 +1,10 @@
-## cmd /K cd /d $(CURRENT_DIRECTORY) && make apdef
-## /K Lader vinduet forblive Ã¥ben Kan erstattes af /C for at lukke det automatisk
-# Makefile version 1.1
-#----------------------------------------------------------------------------
-# On command line:
-#
-# make all = Make software.
-# make clean = Clean out built project files.
-#
-# make pdef = Program with default programmer (USBAsp)
-# make pstk = Program with STK500 kit
-# make pusb = Program with USBAsp
-#
-# make apdef = Build all, and program with default programmer
-# make apstk = Build all, and program with STK500 kit
-# make apusb = Build all, and program with USBAsp
-#
-# make coff = Convert ELF to AVR COFF.
-# make extcoff = Convert ELF to AVR Extended COFF.
-# make program = Download the hex file to the device, using avrdude. Please customize the avrdude settings below first!
-# make debug = Start either simulavr or avarice as specified for debugging, with avr-gdb or avr-insight as the front end for debugging.
-# make filename.s = Just compile filename.c into the assembler code only.
-# make filename.i = Create a preprocessed source file for use in submitting bug reports to the GCC project.
-# To rebuild project do "make clean" then "make all".
-#----------------------------------------------------------------------------
-
 ##################################### MCU name ####################################
-#MCU = attiny13
-#MCU = attiny45
-#MCU = atmega8
 MCU = atmega32
-#MCU = atmega328p
-
-############################### Processor frequency. ###############################
-#     This will define a symbol, F_CPU, in all source code files equal to the 
-#     processor frequency. You can then use this symbol in your source code to 
-#     calculate timings. Do NOT tack on a 'UL' at the end, this will be done
-#     automatically to create a 32-bit value in your source code.
-#     Typical values are:
-#         F_CPU =  1000000
-#         F_CPU =  1843200
-#         F_CPU =  2000000
-#         F_CPU =  3686400
-#         F_CPU =  4000000
-#         F_CPU =  7372800
-#         F_CPU =  8000000
-#         F_CPU = 11059200
-#         F_CPU = 14745600
-#         F_CPU = 16000000
-#         F_CPU = 18432000
-#         F_CPU = 20000000
-
-#################################### TARGET FILE ####################################
 # Target file name (without extension).
 TARGET = ARsample
 
 #################################### EXTRA INC DIRS (.h) ####################################
-# List any extra directories to look for include files here.
-#     Each directory must be seperated by a space.
-#     Use forward slashes for directory separators.
-#     For a directory that has spaces, enclose it in quotes.
 EXTRAINCDIRS = ../00_BSW/FreeRTOS
-
 #################################### SOURCE FILES ####################################
 # List C source files here. (C dependencies are automatically generated.)
 SRC = ../01_SWC/mainSW.c\
@@ -74,36 +18,24 @@ SRC = ../01_SWC/mainSW.c\
 	  ../00_BSW/FreeRTOS/timers.c\
 	  ../00_BSW/FreeRTOS/stream_buffer.c\
 	  ../00_BSW/FreeRTOS/event_groups.c\
-	  
-
-
 #################################### EXTRA LIB DIRS (.c) ####################################
-# List any extra directories to look for libraries here.
-#     Each directory must be seperated by a space.
-#     Use forward slashes for directory separators.
-#     For a directory that has spaces, enclose it in quotes.
 EXTRALIBDIRS = 
-
 #################################### OPTIMAZATION LEVEL ####################################
 # Optimization level, can be [0, 1, 2, 3, s]. 
 #     0 = turn off optimization. s = optimize for size.
 #     (Note: 3 is not always the best optimization level. See avr-libc FAQ.)
 OPT = s
-
 #################################### OUTPUT FORMAT ####################################
 # Output format. (can be srec, ihex, binary)
 FORMAT = ihex
-
 #################################### OBJECT DIR ####################################
 # Object files directory
 #     To put object files in current directory, use a dot (.), do NOT make
 #     this an empty or blank macro!
 OBJDIR = .
-
 #################################### C++ SOURCE FILES ####################################
 # List C++ source files here. (C dependencies are automatically generated.)
 CPPSRC = 
-
 #################################### ASSEMBLER SOURCE FILES ####################################
 # List Assembler source files here.
 #     Make them always end in a capital .S.  Files ending in a lowercase .s
@@ -113,16 +45,11 @@ CPPSRC =
 #     it will preserve the spelling of the filenames, and gcc itself does
 #     care about how the name is spelled on its command-line.
 ASRC =
-
-
 # Debugging format.
 #     Native formats for AVR-GCC's -g are dwarf-2 [default] or stabs.
 #     AVR Studio 4.10 requires dwarf-2.
 #     AVR [Extended] COFF format requires stabs, plus an avr-objcopy run.
 DEBUG = dwarf-2
-
-
-
 # Compiler flag to set the C Standard level.
 #     c89   = "ANSI" C
 #     gnu89 = c89 plus GCC extensions
@@ -132,10 +59,8 @@ CSTANDARD = -std=gnu99
 
 # Place -D or -U options here for C sources
 CDEFS = -DF_CPU=$(F_CPU)UL
-
 # Place -D or -U options here for ASM sources
 ADEFS = -DF_CPU=$(F_CPU)
-
 # Place -D or -U options here for C++ sources
 CPPDEFS = -DF_CPU=$(F_CPU)UL
 #CPPDEFS += -D__STDC_LIMIT_MACROS
@@ -266,61 +191,6 @@ LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 
 #---------------- Programming Options (avrdude) ----------------
 
-# Programming hardware
-# Type: avrdude -c ?
-# to get a full listing.
-#
-
-#################################### PROGRAMMERS ####################################
-# com1 = serial port. Use lpt1 to connect to parallel port.
-
-#------ PROGRAMMER STK500 ------
-AVRDUDE_PROGRAMMERSTK = stk500
-AVRDUDE_PORTSTK = com10    		# programmer connected to serial device
-
-#------ PROGRAMMER USBASP ------
-AVRDUDE_PROGRAMMERUSB = usbasp
-AVRDUDE_PORTUSB = usb    		# programmer connected to serial device
-
-#------ PROGRAMMER DEFAULT ------
-AVRDUDE_PROGRAMMERDEF = $(AVRDUDE_PROGRAMMERUSB)
-AVRDUDE_PORTDEF = $(AVRDUDE_PORTUSB)    
-
-
-
-AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex
-#AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(TARGET).eep
-
-
-# Uncomment the following if you want avrdude's erase cycle counter.
-# Note that this counter needs to be initialized first using -Yn,
-# see avrdude manual.
-#AVRDUDE_ERASE_COUNTER = -y
-
-# Uncomment the following if you do /not/ wish a verification to be
-# performed after programming the device.
-#AVRDUDE_NO_VERIFY = -V
-
-# Increase verbosity level.  Please use this when submitting bug
-# reports about avrdude. See  
-# to submit bug reports.
-#AVRDUDE_VERBOSE = -v -v
-
-AVRDUDE_FLAGSSTK = -p $(MCU) -P $(AVRDUDE_PORTSTK) -c $(AVRDUDE_PROGRAMMERSTK)
-AVRDUDE_FLAGSSTK += $(AVRDUDE_NO_VERIFY)
-AVRDUDE_FLAGSSTK += $(AVRDUDE_VERBOSE)
-AVRDUDE_FLAGSSTK += $(AVRDUDE_ERASE_COUNTER)
-
-AVRDUDE_FLAGSUSB = -p $(MCU) -P $(AVRDUDE_PORTUSB) -c $(AVRDUDE_PROGRAMMERUSB)
-AVRDUDE_FLAGSUSB += $(AVRDUDE_NO_VERIFY)
-AVRDUDE_FLAGSUSB += $(AVRDUDE_VERBOSE)
-AVRDUDE_FLAGSUSB += $(AVRDUDE_ERASE_COUNTER)
-
-AVRDUDE_FLAGSDEF = -p $(MCU) -P $(AVRDUDE_PORTDEF) -c $(AVRDUDE_PROGRAMMERDEF)
-AVRDUDE_FLAGSDEF += $(AVRDUDE_NO_VERIFY)
-AVRDUDE_FLAGSDEF += $(AVRDUDE_VERBOSE)
-AVRDUDE_FLAGSDEF += $(AVRDUDE_ERASE_COUNTER)
-
 
 
 #---------------- Debugging Options ----------------
@@ -357,13 +227,12 @@ DEBUG_HOST = localhost
 
 # Define programs and commands.
 SHELL = sh
-CC = avr-gcc
+CC = AVR-gcc
 OBJCOPY = avr-objcopy
 OBJDUMP = avr-objdump
 SIZE = avr-size
 AR = avr-ar rcs
 NM = avr-nm
-AVRDUDE = avrdude
 REMOVE = rm -f
 REMOVEDIR = rm -rf
 COPY = cp
@@ -391,23 +260,60 @@ WINSHELL = cmd
 #MSG_CREATING_LIBRARY = Creating library:
 
 MSG_ERRORS_NONE = Fejl: ingen
-MSG_BEGIN = -------- START --------
-MSG_END = --------  SLUT  --------
-MSG_SIZE_BEFORE = StÃ¸rrelse fÃ¸r: 
-MSG_SIZE_AFTER = StÃ¸rrelse efter:
+MSG_BEGIN = \n\
+---------------- Start of Compilation Proccess ----------------\n\
+---------------- Start of Compilation Proccess ----------------\n\
+---------------- Start of Compilation Proccess ----------------\n\
+---------------- Start of Compilation Proccess ----------------\n
+MSG_END =  \n\
+---------------- End of Compilation Proccess ----------------\n\
+---------------- End of Compilation Proccess ----------------\n\
+---------------- End of Compilation Proccess ----------------\n\
+---------------- End of Compilation Proccess ----------------\n
+
+CMSG_BEGIN = \n\
+---------------- Start of Cleaning Proccess ----------------\n\
+---------------- Start of Cleaning Proccess ----------------\n\
+---------------- Start of Cleaning Proccess ----------------\n\
+---------------- Start of Cleaning Proccess ----------------\n
+CMSG_END =  \n\
+---------------- End of Cleaning Proccess ----------------\n\
+---------------- End of Cleaning Proccess ----------------\n\
+---------------- End of Cleaning Proccess ----------------\n\
+---------------- End of Cleaning Proccess ----------------\n
+
+MSG_SIZE_BEFORE = Code Size Before Comiling-------------------------
+MSG_SIZE_AFTER =  Code Size After Comiling--------------------------
 MSG_COFF = Konverterer til AVR COFF:
 MSG_EXTENDED_COFF = Konverterer til AVR Extended COFF:
-MSG_FLASH = Creating load file for Flash:
-MSG_EEPROM = Creating load file for EEPROM:
+MSG_FLASH = \n\
+---------------- Creating .hex file for Flash ----------------\n\
+---------------- Creating .hex file for Flash ----------------\n\
+---------------- Creating .hex file for Flash ----------------\n\
+---------------- Creating .hex file for Flash ----------------\n
+MSG_EEPROM = \n\
+---------------- Creating .eep file for eeprom ----------------\n\
+---------------- Creating .eep file for eeprom ----------------\n\
+---------------- Creating .eep file for eeprom ----------------\n\
+---------------- Creating .eep file for eeprom ----------------\n
 MSG_EXTENDED_LISTING = Creating Extended Listing:
 MSG_SYMBOL_TABLE = Laver symbol tabel:
-MSG_LINKING = Linker:
-MSG_COMPILING = Complierer C:
+MSG_LINKING = \n\
+---------------- Linking of .o files ----------------\n\
+---------------- Linking of .o files ----------------\n\
+---------------- Linking of .o files ----------------\n\
+---------------- Linking of .o files ----------------\n
+MSG_COMPILING = \n\
+---------------- Compile $< file ----------------\n\
+#---------------- Compile $< file ----------------\n\
+#---------------- Compile $< file ----------------\n\
+#---------------- Compile $< file ----------------\n
+
 MSG_COMPILING_CPP = Complierer C++:
 MSG_ASSEMBLING = Assembling:
-MSG_CLEANING = Renser projekt:
+MSG_CLEANING = Clean The Project:
 MSG_CREATING_LIBRARY = Opretter bibliotek:
-
+MSG_NWELINE = \n
 
 
 # Define all object files.
@@ -430,18 +336,16 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 
 #all: 
 #clean: 
-pdef: programdef
-pstk: programstk
-pusb: programusb
-apdef: all programdef
-apstk: all programstk
-apusb: all programusb
+
 
 
 
 # Default target. 
-all: begin gccversion sizebefore build sizeafter end
+all: begin gccversion build sizebefore sizeafter end
 
+free: 
+	$(REMOVE) $(SRC:%.c=$(OBJDIR)/%.o)
+	$(REMOVE) $(SRC:%.c=$(OBJDIR)/%.lst)
 # Change the build target to build a HEX file or a library.
 build: elf hex eep lss sym
 #build: lib
@@ -457,15 +361,21 @@ lib: $(LIBNAME)
 
 
 
-# Eye candy.
-# AVR Studio 3.x does not check make's exit code but relies on
-# the following magic strings to be generated by the compile job.
+
 begin:
 	@echo
 	@echo $(MSG_BEGIN)
 
 end:
 	@echo $(MSG_END)
+	@echo
+
+cleanbegin:
+	@echo
+	@echo $(CMSG_BEGIN)
+
+cleanend:
+	@echo $(CMSG_END)
 	@echo
 
 
@@ -486,18 +396,8 @@ sizeafter:
 # Display compiler version information.
 gccversion : 
 	@$(CC) --version
-
-
-
 # Program the device <<<<<<<
-programstk: $(TARGET).hex $(TARGET).eep
-	$(AVRDUDE) $(AVRDUDE_FLAGSSTK) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
 
-programusb: $(TARGET).hex $(TARGET).eep
-	$(AVRDUDE) $(AVRDUDE_FLAGSUSB) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
-
-programdef: $(TARGET).hex $(TARGET).eep
-	$(AVRDUDE) $(AVRDUDE_FLAGSDEF) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
 
 
 # Generate avr-gdb config/init file which does the following:
@@ -514,42 +414,6 @@ ifeq ($(DEBUG_BACKEND),simulavr)
 	@echo load  >> $(GDBINIT_FILE)
 endif
 	@echo break main >> $(GDBINIT_FILE)
-
-debug: gdb-config $(TARGET).elf
-ifeq ($(DEBUG_BACKEND), avarice)
-	@echo Starting AVaRICE - Press enter when "waiting to connect" message displays.
-	@$(WINSHELL) /c start avarice --jtag $(JTAG_DEV) --erase --program --file \
-	$(TARGET).elf $(DEBUG_HOST):$(DEBUG_PORT)
-	@$(WINSHELL) /c pause
-
-else
-	@$(WINSHELL) /c start simulavr --gdbserver --device $(MCU) --clock-freq \
-	$(DEBUG_MFREQ) --port $(DEBUG_PORT)
-endif
-	@$(WINSHELL) /c start avr-$(DEBUG_UI) --command=$(GDBINIT_FILE)
-
-
-
-
-# Convert ELF to COFF for use in debugging / simulating in AVR Studio or VMLAB.
-COFFCONVERT = $(OBJCOPY) --debugging
-COFFCONVERT += --change-section-address .data-0x800000
-COFFCONVERT += --change-section-address .bss-0x800000
-COFFCONVERT += --change-section-address .noinit-0x800000
-COFFCONVERT += --change-section-address .eeprom-0x810000
-
-
-
-coff: $(TARGET).elf
-	@echo
-	@echo $(MSG_COFF) $(TARGET).cof
-	$(COFFCONVERT) -O coff-avr $< $(TARGET).cof
-
-
-extcoff: $(TARGET).elf
-	@echo
-	@echo $(MSG_EXTENDED_COFF) $(TARGET).cof
-	$(COFFCONVERT) -O coff-ext-avr $< $(TARGET).cof
 
 
 
@@ -600,7 +464,7 @@ extcoff: $(TARGET).elf
 # Compile: create object files from C source files.
 $(OBJDIR)/%.o : %.c
 	@echo
-	@echo $(MSG_COMPILING) $<
+	@echo $(MSG_COMPILING)
 	$(CC) -c $(ALL_CFLAGS) $< -o $@ 
 
 
@@ -634,7 +498,7 @@ $(OBJDIR)/%.o : %.S
 
 
 # Target: clean project.
-clean: begin clean_list end
+clean: cleanbegin clean_list cleanend
 
 clean_list :
 	@echo
